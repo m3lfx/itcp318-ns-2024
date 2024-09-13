@@ -1,5 +1,5 @@
 const Product = require('../models/product')
-exports.getProducts = async (req, res, next) => {
+exports.getProducts = async (req, res) => {
     const products = await Product.find();
     const productsCount = await Product.countDocuments();
 	if (!products) 
@@ -8,6 +8,5 @@ exports.getProducts = async (req, res, next) => {
         success: true,
         count: productsCount,
         products,
-		
-    })
+	})
 }

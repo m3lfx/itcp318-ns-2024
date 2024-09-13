@@ -17,6 +17,7 @@ const Home = () => {
         let res = await axios.get(link)
         console.log(res)
         setProducts(res.data.products)
+        setProductsCount(res.data.count)
     }
 
     useEffect(() => {

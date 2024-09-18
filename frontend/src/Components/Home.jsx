@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import MetaData from './Layout/MetaData'
 import axios from 'axios'
 import Product from './Product/Product'
+import Pagination from 'react-js-pagination'
 
 
 
@@ -10,10 +11,12 @@ const Home = () => {
     const [products, setProducts] = useState([])
     const [productsCount, setProductsCount] = useState(0)
     const [filteredProductsCount, setFilteredProductsCount] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [resPerPage, setResPerPage] = useState(0)
     let { keyword } = useParams();
-    const getProducts = async (keyword='') => {
+    const getProducts = async (keyword='', page=1) => {
 
-        let link = `http://localhost:4001/api/v1/products?keyword=${keyword}`
+        let link = `http://localhost:4001/api/v1/products?page=${page}&keyword=${keyword}`
         // link = `http://localhost:4001/api/v1/products?page=${page}&keyword=${keyword}&price[lte]=${price[1]}&price[gte]=${price[0]}`
 
 
@@ -22,11 +25,21 @@ const Home = () => {
         setProducts(res.data.products)
         setProductsCount(res.data.count)
         setFilteredProductsCount(res.data.filteredProductsCount)
+        setResPerPage(res.data.resPerPage)
+    }
+
+    let count = productsCount
+    if (keyword) {
+        count = filteredProductsCount
+    }
+
+    function setCurrentPageNo(pageNumber) {
+        setCurrentPage(pageNumber)
     }
 
     useEffect(() => {
-        getProducts(keyword)
-    }, [keyword]);
+        getProducts(keyword, currentPage)
+    }, [keyword, currentPage]);
     return (
         <>
             <MetaData title={'Buy Best Products Online'} />
@@ -39,6 +52,21 @@ const Home = () => {
                         ))}
 
                     </div>
+                    {resPerPage <= count && (
+                        <div className="d-flex justify-content-center mt-5">
+                            <Pagination
+                                activePage={currentPage}
+                                itemsCountPerPage={resPerPage}
+                                totalItemsCount={count}
+                                onChange={setCurrentPageNo}
+                                nextPageText={'Next'}
+                                prevPageText={'Prev'}
+                                firstPageText={'First'}
+                                lastPageText={'Last'}
+                                itemClass="page-item"
+                                linkClass="page-link"
+                            />
+                        </div>)}
                 </section>
             </div>
         </>

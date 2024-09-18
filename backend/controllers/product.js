@@ -6,12 +6,15 @@ exports.getProducts = async (req, res) => {
     const productsCount = await Product.countDocuments();
 	const apiFeatures = new APIFeatures(Product.find(), req.query).search()
 	const products = await apiFeatures.query;
+	let filteredProductsCount = products.length;
+
 	if (!products) 
         return res.status(400).json({message: 'error loading products'})
    return res.status(200).json({
         success: true,
         count: productsCount,
         products,
+		filteredProductsCount,
 	})
 }
 

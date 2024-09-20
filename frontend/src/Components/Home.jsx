@@ -16,19 +16,37 @@ const Home = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [resPerPage, setResPerPage] = useState(0)
     const [price, setPrice] = useState([1, 1000]);
-    // const [search, setSearch] = useState('')
+    
+    const [category, setCategory] = useState('');
     let { keyword } = useParams();
 
     const createSliderWithTooltip = Slider.createSliderWithTooltip;
     const Range = createSliderWithTooltip(Slider.Range);
 
+    const categories = [
+        'Electronics',
+        'Cameras',
+        'Laptops',
+        'Accessories',
+        'Headphones',
+        'Food',
+        "Books",
+        'Clothes/Shoes',
+        'Beauty/Health',
+        'Sports',
+        'Outdoor',
+        'Home'
+    ]
 
-    const getProducts = async (keyword = '', page=1, price) => {
+
+    const getProducts = async (keyword = '', page=1, price,  category,) => {
 
         let link = `http://localhost:4001/api/v1/products?page=${page}&keyword=${keyword}&price[lte]=${price[1]}&price[gte]=${price[0]}`
         // link = `http://localhost:4001/api/v1/products?page=${page}&keyword=${keyword}&price[lte]=${price[1]}&price[gte]=${price[0]}`
 
-
+        if (category) {
+            link = `http://localhost:4001/api/v1/products?keyword=${keyword}&page=${page}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}`
+        }
         let res = await axios.get(link)
         console.log(res)
         setProducts(res.data.products)
@@ -47,8 +65,8 @@ const Home = () => {
     }
 
     useEffect(() => {
-        getProducts(keyword, currentPage, price)
-    }, [keyword, currentPage, price]);
+        getProducts(keyword, currentPage, price,  category,)
+    }, [keyword, currentPage, price,  category,]);
     return (
         <>
             <MetaData title={'Buy Best Products Online'} />
@@ -82,6 +100,26 @@ const Home = () => {
                                                 onChange={price => setPrice(price)}
                                             />
                                             <hr className="my-5" />
+                                            <hr className="my-5" />
+                                            <div className="mt-5">
+                                                <h4 className="mb-3">
+                                                    Categories
+                                                </h4>
+                                                <ul className="pl-0">
+                                                    {categories.map(category => (
+                                                        <li
+                                                            style={{
+                                                                cursor: 'pointer',
+                                                                listStyleType: 'none'
+                                                            }}
+                                                            key={category}
+                                                            onClick={() => setCategory(category)}
+                                                        >
+                                                            {category}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
                                             
 
                                         </div>

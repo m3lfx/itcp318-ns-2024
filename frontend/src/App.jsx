@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import './App.css'
+import {  ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
 import Header from './Components/Layout/Header'
 import Footer from './Components/Layout/Footer'
 import Home from './Components/Home';
@@ -24,6 +27,7 @@ function App() {
 
       </Router>
       <Footer />
+      <ToastContainer />
     </>
   )
 }

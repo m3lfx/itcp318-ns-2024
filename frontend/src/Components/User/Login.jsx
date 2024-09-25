@@ -6,7 +6,7 @@ import MetaData from '../Layout/MetaData';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-// import {authenticate} from '../../utils/helpers'
+import {authenticate} from '../../utils/helpers'
 // import { getUser } from '../../utils/helpers'
 
 
@@ -37,7 +37,7 @@ const Login = () => {
             
         } catch (error) {
             toast.error("invalid user or password", {
-                position: toast.POSITION.BOTTOM_RIGHT
+                position: 'bottom-right'
             })
         }
     }

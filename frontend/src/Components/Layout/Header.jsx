@@ -32,7 +32,7 @@ const Header = () => {
 
 	useEffect(() => {
         setUser(getUser())
-    }, [user]);
+    }, []);
 	return (
 		<>
 			<nav className="navbar row">

@@ -12,6 +12,7 @@ import ProductDetails from './Components/Product/ProductDetails';
 import Register from './Components/User/Register';
 import Login from './Components/User/Login';
 import ForgotPassword from './Components/User/ForgotPassword';
+import NewPassword from './Components/User/NewPassword';
 function App() {
   return (
     <>
@@ -25,7 +26,7 @@ function App() {
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register exact="true" />} />
           <Route path="/password/forgot" element={<ForgotPassword />} exact="true" />
-          
+          <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
         </Routes>
 
       </Router>

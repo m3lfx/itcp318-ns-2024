@@ -6,6 +6,7 @@ import Product from './Product/Product'
 import Pagination from 'react-js-pagination'
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import Loader from './Layout/Loader'
 
 
 
@@ -18,6 +19,8 @@ const Home = () => {
     const [price, setPrice] = useState([1, 1000]);
     
     const [category, setCategory] = useState('');
+    const [loading, setLoading] = useState(true)
+
     let { keyword } = useParams();
 
     const createSliderWithTooltip = Slider.createSliderWithTooltip;
@@ -53,6 +56,7 @@ const Home = () => {
         setProductsCount(res.data.productsCount)
         setFilteredProductsCount(res.data.filteredProductsCount)
         setResPerPage(res.data.resPerPage)
+        setLoading(false)
     }
 
     let count = productsCount
@@ -70,7 +74,7 @@ const Home = () => {
     return (
         <>
             <MetaData title={'Buy Best Products Online'} />
-            <div className="container container-fluid">
+            {loading ? <Loader /> : ( <div className="container container-fluid">
                 <h1 id="products_heading">Latest Products</h1>
                 <section id="products" className="container mt-5">
                         {/* <div className="row">
@@ -157,7 +161,8 @@ const Home = () => {
                             />
                         </div>)}
               
-            </div>
+            </div>)}
+           
         </>
     )
 }

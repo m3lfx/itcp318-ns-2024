@@ -7,7 +7,7 @@ const cloudinary = require('cloudinary')
 
 
 exports.registerUser = async (req, res, next) => {
-    const result = await cloudinary.v2.uploader.upload(req.file.path, {
+    const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
         folder: 'avatars',
         width: 150,
         crop: "scale"

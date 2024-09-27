@@ -75,7 +75,7 @@ exports.forgotPassword = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
         return res.status(404).json({ error: 'User not found with this email' })
-      
+
     }
     // Get reset token
     const resetToken = user.getResetPasswordToken();
@@ -119,7 +119,7 @@ exports.resetPassword = async (req, res, next) => {
 
     if (req.body.password !== req.body.confirmPassword) {
         return res.status(400).json({ message: 'Password does not match' })
-      
+
     }
 
     // Setup new password
@@ -145,7 +145,7 @@ exports.getUserProfile = async (req, res, next) => {
 }
 
 exports.updateProfile = async (req, res, next) => {
-    
+
     const newUserData = {
         name: req.body.name,
         email: req.body.email
@@ -181,5 +181,25 @@ exports.updateProfile = async (req, res, next) => {
         success: true,
         user
     })
+}
+
+exports.updatePassword = async (req, res, next) => {
+    console.log(req.body.password)
+    const user = await User.findById(req.user.id).select('+password');
+    // Check previous user password
+    const isMatched = await user.comparePassword(req.body.oldPassword)
+    if (!isMatched) {
+        return res.status(400).json({ message: 'Old password is incorrect' })
+    }
+    user.password = req.body.password;
+    await user.save();
+    const token = user.getJwtToken();
+
+    return res.status(201).json({
+        success: true,
+        user,
+        token
+    });
+
 }
 

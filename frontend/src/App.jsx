@@ -15,6 +15,7 @@ import ForgotPassword from './Components/User/ForgotPassword';
 import NewPassword from './Components/User/NewPassword';
 import Profile from './Components/User/Profile';
 import UpdateProfile from './Components/User/UpdateProfile';
+import UpdatePassword from './Components/User/UpdatePassword';
 function App() {
   return (
     <>
@@ -35,6 +36,7 @@ function App() {
             }
             exact="true"
           />
+          <Route path="/password/update" element={<UpdatePassword />} />
         </Routes>
 
       </Router>

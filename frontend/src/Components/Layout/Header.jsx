@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { getUser, logout } from '../../utils/helpers'
-const Header = () => {
+const Header = ({cartItems}) => {
 	const [user, setUser] = useState({})
 	const navigate = useNavigate()
 
@@ -72,8 +72,12 @@ const Header = () => {
                         </div>
                     </div>) : <Link to="/login" className="btn ml-4" id="login_btn">Login</Link>}
 
-					<span id="cart" className="ml-3">Cart</span>
-					<span className="ml-1" id="cart_count">2</span>
+					<Link to="/cart" style={{ textDecoration: 'none' }} >
+                        <span id="cart" className="ml-3">Cart</span>
+                        
+                        {/*<span className="ml-1" id="cart_count">2</span>*/}
+                    </Link>
+					<span className="ml-1" id="cart_count">{cartItems.length}</span>
 				</div>
 			</nav>
 		</>

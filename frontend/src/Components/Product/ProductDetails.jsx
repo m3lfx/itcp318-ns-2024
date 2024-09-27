@@ -7,16 +7,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import axios from 'axios'
 
-const ProductDetails = () => {
+const ProductDetails = ({cartItems, addItemToCart}) => {
     const [product, setProduct] = useState({})
     const [error, setError] = useState('')
     const [quantity, setQuantity] = useState(1)
 
-    const [state, setState] = useState({
-        cartItems: localStorage.getItem('cartItems')
-            ? JSON.parse(localStorage.getItem('cartItems'))
-            : [],
-    })
+    
     let { id } = useParams()
     let navigate = useNavigate()
     const increaseQty = () => {
@@ -47,50 +43,7 @@ const ProductDetails = () => {
         }
     }
 
-    const addItemToCart = async (id, quantity) => {
-        // console.log(id, quantity)
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_API}/product/${id}`)
-            const item = {
-                product: data.product._id,
-                name: data.product.name,
-                price: data.product.price,
-                image: data.product.images[0].url,
-                stock: data.product.stock,
-                quantity: quantity
-            }
-
-            const isItemExist = state.cartItems.find(i => i.product === item.product)
-            console.log(state)
-            setState({
-                ...state,
-                cartItems: [...state.cartItems, item]
-            })
-            if (isItemExist) {
-                setState({
-                    ...state,
-                    cartItems: state.cartItems.map(i => i.product === isItemExist.product ? item : i)
-                })
-            }
-            else {
-                setState({
-                    ...state,
-                    cartItems: [...state.cartItems, item]
-                })
-            }
-
-            toast.success('Item Added to Cart', {
-                position: 'bottom-right'
-            })
-
-        } catch (error) {
-            toast.error(error, {
-                position: 'top-left'
-            });
-            navigate('/')
-        }
-
-    }
+    
 
     const addToCart = async () => {
         await addItemToCart(id, quantity);
@@ -103,7 +56,7 @@ const ProductDetails = () => {
             setError('')
         }
     }, [id, error]);
-    localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
+    localStorage.setItem('cartItems', JSON.stringify(cartItems))
     return (
         <>
             <MetaData title={product.name} />

@@ -22,6 +22,7 @@ import ConfirmOrder from './Components/Cart/ConfirmOrder';
 import Payment from './Components/Cart/Payment';
 import OrderSuccess from './Components/Cart/OrderSuccess';
 import ListOrders from './Components/Order/ListOrders';
+import OrderDetails from './Components/Order/OrderDetails';
 import axios from 'axios';
 function App() {
   const [state, setState] = useState({
@@ -119,6 +120,7 @@ function App() {
           <Route path="/payment" element={<Payment cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
           <Route path="/success" element={<OrderSuccess />} />
           <Route path="/orders/me" element={<ListOrders />} />
+          <Route path="/order/:id" element={<OrderDetails />} />
         </Routes>
 
       </Router>

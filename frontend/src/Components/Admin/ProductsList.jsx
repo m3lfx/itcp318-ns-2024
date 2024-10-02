@@ -48,39 +48,39 @@ const ProductsList = () => {
             });
         }
 
-        // if (deleteError) {
-        //     toast.error(deleteError, {
-        //         position: toast.POSITION.BOTTOM_RIGHT
-        //     });
-        // }
+        if (deleteError) {
+            toast.error(deleteError, {
+                position: 'bottom-right'
+            });
+        }
 
-        // if (isDeleted) {
-        //     toast.success('Product deleted successfully', {
-        //         position: toast.POSITION.BOTTOM_RIGHT
-        //     })
-        //     navigate('/admin/products');
+        if (isDeleted) {
+            toast.success('Product deleted successfully', {
+                position: 'bottom-right'
+            })
+            setIsDeleted(false)
+            navigate('/admin/products');
 
-        // }
+        }
 
-    }, [error,])
+    }, [error, deleteError, isDeleted,])
 
-    // const deleteProduct = async (id) => {
-    //     try {
-    //         const config = {
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data',
-    //                 'Authorization': `Bearer ${getToken()}`
-    //             }
-    //         }
-    //         const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/product/${id}`, config)
+    const deleteProduct = async (id) => {
+        try {
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`
+                }
+            }
+            const { data } = await axios.delete(`${import.meta.env.VITE_API}/admin/product/${id}`, config)
 
-    //         setIsDeleted(data.success)
-    //         setLoading(false)
-    //     } catch (error) {
-    //         setDeleteError(error.response.data.message)
+            setIsDeleted(data.success)
+            setLoading(false)
+        } catch (error) {
+            setDeleteError(error.response.data.message)
 
-    //     }
-    // }
+        }
+    }
 
 
 

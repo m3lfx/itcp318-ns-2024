@@ -17,6 +17,7 @@ import Profile from './Components/User/Profile';
 import UpdateProfile from './Components/User/UpdateProfile';
 import UpdatePassword from './Components/User/UpdatePassword';
 import Cart from './Components/Cart/Cart';
+import Shipping from './Components/Cart/Shipping';
 
 import axios from 'axios';
 function App() {
@@ -24,6 +25,10 @@ function App() {
     cartItems: localStorage.getItem('cartItems')
       ? JSON.parse(localStorage.getItem('cartItems'))
       : [],
+
+    shippingInfo: localStorage.getItem('shippingInfo')
+      ? JSON.parse(localStorage.getItem('shippingInfo'))
+      : {},
   })
 
   const addItemToCart = async (id, quantity) => {
@@ -77,6 +82,14 @@ function App() {
     })
     localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
   }
+
+  const saveShippingInfo = async (data) => {
+    setState({
+      ...state,
+      shippingInfo: data
+    })
+    localStorage.setItem('shippingInfo', JSON.stringify(data))
+  }
   return (
     <>
 
@@ -98,6 +111,7 @@ function App() {
           />
           <Route path="/password/update" element={<UpdatePassword />} />
           <Route path="/cart" element={<Cart cartItems={state.cartItems} addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact="true" />
+          <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />
         </Routes>
 
       </Router>

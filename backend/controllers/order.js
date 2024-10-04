@@ -54,3 +54,41 @@ exports.getSingleOrder = async (req, res, next) => {
         order
     })
 }
+
+exports.allOrders = async (req, res, next) => {
+    const orders = await Order.find()
+    // console.log(orders)
+
+    if (!orders) {
+        return res.status(404).json({
+            message: 'No Orders',
+
+        })
+    }
+    let totalAmount = 0;
+
+    orders.forEach(order => {
+        totalAmount += order.totalPrice
+    })
+
+    return res.status(200).json({
+        success: true,
+        totalAmount,
+        orders
+    })
+}
+
+exports.deleteOrder = async (req, res, next) => {
+    const order = await Order.findByIdAndDelete(req.params.id)
+
+    if (!order) {
+        return res.status(400).json({
+            message: 'No Order found with this ID',
+
+        })
+        // return next(new ErrorHandler('No Order found with this ID', 404))
+    }
+    return res.status(200).json({
+        success: true
+    })
+}

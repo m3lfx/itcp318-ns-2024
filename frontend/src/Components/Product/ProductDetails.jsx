@@ -4,15 +4,21 @@ import MetaData from '../Layout/MetaData'
 import { Carousel } from 'react-bootstrap'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getUser, getToken, successMsg, errMsg } from '../../utils/helpers'
 
 import axios from 'axios'
 
-const ProductDetails = ({cartItems, addItemToCart}) => {
+const ProductDetails = ({ cartItems, addItemToCart }) => {
     const [product, setProduct] = useState({})
     const [error, setError] = useState('')
     const [quantity, setQuantity] = useState(1)
+    const [user, setUser] = useState(getUser())
+    const [rating, setRating] = useState(0)
+    const [comment, setComment] = useState('')
+    const [errorReview, setErrorReview] = useState('');
+    const [success, setSuccess] = useState('')
 
-    
+
     let { id } = useParams()
     let navigate = useNavigate()
     const increaseQty = () => {
@@ -43,12 +49,45 @@ const ProductDetails = ({cartItems, addItemToCart}) => {
         }
     }
 
-    
+
 
     const addToCart = async () => {
         await addItemToCart(id, quantity);
 
     }
+    function setUserRatings() {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach((star, index) => {
+            star.starValue = index + 1;
+            ['click', 'mouseover', 'mouseout'].forEach(function (e) {
+                star.addEventListener(e, showRatings);
+            })
+        })
+        function showRatings(e) {
+            stars.forEach((star, index) => {
+                if (e.type === 'click') {
+                    if (index < this.starValue) {
+                        star.classList.add('orange');
+                        setRating(this.starValue)
+                    } else {
+                        star.classList.remove('orange')
+                    }
+                }
+                if (e.type === 'mouseover') {
+                    if (index < this.starValue) {
+                        star.classList.add('yellow');
+                    } else {
+                        star.classList.remove('yellow')
+                    }
+                }
+                if (e.type === 'mouseout') {
+                    star.classList.remove('yellow')
+                }
+            })
+        }
+    }
+
+
     useEffect(() => {
         productDetails(id)
         if (error) {
@@ -93,7 +132,7 @@ const ProductDetails = ({cartItems, addItemToCart}) => {
                         <span className="btn btn-primary plus" onClick={increaseQty}>+</span>
                     </div>
 
-                    {/* <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4" disabled={product.stock === 0} >Add to Cart</button> */}
+
                     <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4" disabled={product.stock === 0} onClick={addToCart}>Add to Cart</button>
                     <hr />
 
@@ -106,9 +145,13 @@ const ProductDetails = ({cartItems, addItemToCart}) => {
                     <hr />
                     <p id="product_seller mb-3">Sold by: <strong>{product.seller}</strong></p>
                     {/* <div className="alert alert-danger mt-5" type='alert'>Login to post your review.</div> */}
-                    <button id="review_btn" type="button" className="btn btn-primary mt-4" data-toggle="modal" data-target="#ratingModal"  >
+                    {/* <button id="review_btn" type="button" className="btn btn-primary mt-4" data-toggle="modal" data-target="#ratingModal"  >
                         Submit Your Review
-                    </button>
+                    </button> */}
+                    {user ? <button id="review_btn" type="button" className="btn btn-primary mt-4" data-toggle="modal" data-target="#ratingModal" onClick={setUserRatings} >
+                        Submit Your Review
+                    </button> :
+                        <div className="alert alert-danger mt-5" type='alert'>Login to post your review.</div>}
                     <div className="row mt-2 mb-5">
                         <div className="rating w-50">
 

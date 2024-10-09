@@ -1,4 +1,4 @@
-import React, {  useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import '../../App.css'
 import Search from './Search'
@@ -7,11 +7,11 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { getUser, logout } from '../../utils/helpers'
-const Header = ({cartItems}) => {
-	const [user, setUser] = useState({})
-	const navigate = useNavigate()
+const Header = ({ cartItems }) => {
+    const [user, setUser] = useState({})
+    const navigate = useNavigate()
 
-	// const logoutUser = async () => {
+    // const logoutUser = async () => {
 
     //     try {
     //         await axios.get(`http://localhost:4001/api/v1/logout`)
@@ -22,7 +22,7 @@ const Header = ({cartItems}) => {
 
     //     }
     // }
-	
+
     const logoutHandler = () => {
         logout(navigate('/'));
         toast.success('log out', {
@@ -30,22 +30,25 @@ const Header = ({cartItems}) => {
         });
     }
 
-	useEffect(() => {
+    useEffect(() => {
         setUser(getUser())
     }, []);
-	return (
-		<>
-			<nav className="navbar row">
-				<div className="col-12 col-md-3">
-					<div className="navbar-brand">
-						<img src="./images/shopit_logo.png" />
-					</div>
-				</div>
-				<Search />
-			
-				<div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
-					{/* <button className="btn" id="login_btn">Login</button> */}
-					{user ? (<div className="ml-4 dropdown d-inline">
+    return (
+        <>
+            <nav className="navbar row">
+                <div className="col-12 col-md-3">
+                    <div className="navbar-brand">
+                        <Link to="/">
+                            <img src="./images/shopit_logo.png" />
+                        </Link>
+
+                    </div>
+                </div>
+                <Search />
+
+                <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
+                    {/* <button className="btn" id="login_btn">Login</button> */}
+                    {user ? (<div className="ml-4 dropdown d-inline">
                         <Link to="#!" className="btn dropdown-toggle text-white mr-4" type="button" id="dropDownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <figure className="avatar avatar-nav">
                                 <img
@@ -72,16 +75,16 @@ const Header = ({cartItems}) => {
                         </div>
                     </div>) : <Link to="/login" className="btn ml-4" id="login_btn">Login</Link>}
 
-					<Link to="/cart" style={{ textDecoration: 'none' }} >
+                    <Link to="/cart" style={{ textDecoration: 'none' }} >
                         <span id="cart" className="ml-3">Cart</span>
-                        
+
                         {/*<span className="ml-1" id="cart_count">2</span>*/}
                     </Link>
-					<span className="ml-1" id="cart_count">{cartItems.length}</span>
-				</div>
-			</nav>
-		</>
-	)
+                    <span className="ml-1" id="cart_count">{cartItems.length}</span>
+                </div>
+            </nav>
+        </>
+    )
 }
 
 export default Header

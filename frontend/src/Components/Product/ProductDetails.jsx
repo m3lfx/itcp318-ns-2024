@@ -5,6 +5,7 @@ import { Carousel } from 'react-bootstrap'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getUser, getToken, successMsg, errMsg } from '../../utils/helpers'
+import ListReviews from '../Review/ListReviews';
 
 import axios from 'axios'
 
@@ -87,6 +88,32 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
         }
     }
 
+    const newReview = async (reviewData) => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
+                }
+            }
+
+            const { data } = await axios.put(`${import.meta.env.VITE_API}/review`, reviewData, config)
+            setSuccess(data.success)
+
+        } catch (error) {
+            setErrorReview(error.response.data.message)
+        }
+    }
+
+    const reviewHandler = () => {
+        const formData = new FormData();
+        formData.set('rating', rating);
+        formData.set('comment', comment);
+        formData.set('productId', id);
+        newReview(formData)
+
+    }
+
 
     useEffect(() => {
         productDetails(id)
@@ -94,7 +121,16 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
             navigate('/')
             setError('')
         }
-    }, [id, error]);
+        if (errorReview) {
+            errMsg(errorReview)
+            setErrorReview('')
+        }
+        if (success) {
+            successMsg('Review posted successfully')
+            setSuccess(false)
+
+        }
+    }, [id, error, success, errorReview]);
     localStorage.setItem('cartItems', JSON.stringify(cartItems))
     return (
         <>
@@ -177,12 +213,14 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                                             <textarea
                                                 name="review"
                                                 id="review" className="form-control mt-3"
+                                                value={comment}
+                                                onChange={(e) => setComment(e.target.value)}
 
                                             >
                                             </textarea>
 
 
-                                            <button className="btn my-3 float-right review-btn px-4 text-white" data-dismiss="modal" aria-label="Close" >Submit</button>
+                                            <button className="btn my-3 float-right review-btn px-4 text-white" data-dismiss="modal" aria-label="Close" onClick={reviewHandler} >Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -191,6 +229,11 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                         </div>
                     </div>
                 </div>
+                {product.reviews && product.reviews.length > 0 && (
+
+                    <ListReviews reviews={product.reviews} />
+
+                )}
             </div>
 
 

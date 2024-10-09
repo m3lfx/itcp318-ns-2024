@@ -31,6 +31,7 @@ import ProcessOrder from './Components/Admin/ProcessOrder';
 import UsersList from './Components/Admin/UsersList';
 import UpdateUser from './Components/Admin/UpdateUser';
 import ProtectedRoute from './Components/Route/ProtectedRoute';
+import Dashboard from './Components/Admin/Dashboard';
 import axios from 'axios';
 
 function App() {
@@ -136,16 +137,16 @@ function App() {
             path="/admin/product/:id"
             element={<UpdateProduct />} />
 
-          <Route
+          {/* <Route
             path="/admin/orders"
-            element={<OrdersList />} />
+            element={<OrdersList />} /> */}
           <Route
             path="/admin/order/:id"
             element={<ProcessOrder />} />
 
-          <Route
+          {/* <Route
             path="/admin/users"
-            element={<UsersList />} />
+            element={<UsersList />} /> */}
 
           <Route path="/admin/user/:id" element={<UpdateUser />} />
           <Route
@@ -174,10 +175,15 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
-
-
-
       </Router>
       <Footer />
       <ToastContainer />

@@ -192,7 +192,7 @@ exports.customerSales = async (req, res, next) => {
         //     }
         // },
 
-        // { $unwind: "$userDetails" },
+        { $unwind: "$userDetails" },
         // {
         //     $group: {
         //         _id: "$user",
@@ -207,12 +207,12 @@ exports.customerSales = async (req, res, next) => {
         //         newRoot: { $mergeObjects: [{ total: '$total' }, '$doc'] },
         //     },
         // },
-        // {
-        //     $group: {
-        //         _id: "$userDetails.name",
-        //         total: { $sum: "$totalPrice" }
-        //     }
-        // },
+        {
+            $group: {
+                _id: "$userDetails.name",
+                total: { $sum: "$totalPrice" }
+            }
+        },
         // {
         //     $project: {
         //         _id: 1,
@@ -220,7 +220,7 @@ exports.customerSales = async (req, res, next) => {
         //         total: true,
         //     }
         // },
-        // { $sort: { total: 1 } },
+        { $sort: { total: -1 } },
 
     ])
     console.log(customerSales)

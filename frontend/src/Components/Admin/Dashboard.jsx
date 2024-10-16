@@ -6,10 +6,10 @@ import Loader from '../Layout/Loader'
 import Sidebar from './SideBar'
 import { getToken } from '../../utils/helpers';
 import axios from 'axios'
-import { toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
 import UserSalesChart from './UserSalesChart';
-// import MonthlySalesChart from './MonthlySalesChart';
+import MonthlySalesChart from './MonthlySalesChart';
 import ProductSalesChart from './ProductSalesChart';
 
 const Dashboard = () => {
@@ -178,7 +178,7 @@ console.log(allOrders.length, allUsers.length)
                         <UserSalesChart />
                     </>
                     <>
-                        {/* <MonthlySalesChart /> */}
+                        <MonthlySalesChart />
                     </>
                     <>
                         <ProductSalesChart />

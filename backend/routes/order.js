@@ -10,6 +10,7 @@ const { newOrder,
     totalOrders,
     totalSales,
     customerSales,
+    salesPerMonth,
  } = require('../controllers/order')
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth')
 
@@ -21,5 +22,5 @@ router.route('/admin/order/:id').delete(isAuthenticatedUser, deleteOrder).put(is
 router.get('/admin/total-orders', totalOrders);
 router.get('/admin/total-sales', totalSales);
 router.get('/admin/customer-sales', customerSales);
-
+router.get('/admin/sales-per-month', salesPerMonth);
 module.exports = router;

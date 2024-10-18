@@ -3,7 +3,7 @@ const User = require('../models/user');
 
 const crypto = require('crypto')
 const cloudinary = require('cloudinary')
-
+const sendToken = require('../utils/jwtToken')
 const sendEmail = require('../utils/sendEmail')
 
 
@@ -26,14 +26,14 @@ exports.registerUser = async (req, res, next) => {
         },
     })
     //test token
-    const token = user.getJwtToken();
+    // const token = user.getJwtToken();
 
-    return res.status(201).json({
-        success: true,
-        user,
-        token
-    })
-    // sendToken(user, 200, res)
+    // return res.status(201).json({
+    //     success: true,
+    //     user,
+    //     token
+    // })
+    sendToken(user, 200, res)
 }
 
 exports.loginUser = async (req, res, next) => {
@@ -60,15 +60,15 @@ exports.loginUser = async (req, res, next) => {
     if (!isPasswordMatched) {
         return res.status(401).json({ message: 'Invalid Email or Password' })
     }
-    const token = user.getJwtToken();
+    // const token = user.getJwtToken();
 
-    res.status(201).json({
-        success: true,
-        token,
-        user
-    });
+    // res.status(201).json({
+    //     success: true,
+    //     token,
+    //     user
+    // });
     //  user = await User.findOne({ email })
-    // sendToken(user, 200, res)
+    sendToken(user, 200, res)
 }
 
 exports.forgotPassword = async (req, res, next) => {
@@ -127,12 +127,13 @@ exports.resetPassword = async (req, res, next) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
-    const token = user.getJwtToken();
-    return res.status(201).json({
-        success: true,
-        token,
-        user
-    });
+    // const token = user.getJwtToken();
+    // return res.status(201).json({
+    //     success: true,
+    //     token,
+    //     user
+    // });
+    sendToken(user, 200, res)
 }
 
 exports.getUserProfile = async (req, res, next) => {
